@@ -23,8 +23,9 @@ vi /etc/openvpn/server/server.conf
 ```
 
 comment out to only use vpn for dns lookup
-
-```#push "redirect-gateway def1 bypass-dhcp"```
+```
+#push "redirect-gateway def1 bypass-dhcp"
+```
 
 add tun ip
 ```
