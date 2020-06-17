@@ -23,6 +23,7 @@ vi /etc/openvpn/server/server.conf
 ```
 
 comment out to only use vpn for dns lookup
+
 ```#push "redirect-gateway def1 bypass-dhcp"```
 
 add tun ip
@@ -36,17 +37,17 @@ log /var/log/openvpn.log
 verb 3
 ```
 
-Restart openvpn
+restart openvpn
 ```bash
 systemctl restart openvpn-server@server
 ```
 
-Create more client .opvn files
+create more client .opvn files
 ```bash
 ./openvpn-install.sh
 ```
 
-Update .ovpn files
+update .ovpn files
 ```bash
 ;remote 98.109.40.122 1194
 remote thewongguy.ddns.net 1194
@@ -164,7 +165,7 @@ Local DNS Records
 Domain: pi.hole
 IP Address: <your ip>
   
-### crontah
+### crontab
 ```bash
 * * * * * /root/startup.sh >/dev/null 2>&1
 0 0 * * * /usr/local/bin/pihole -g >/dev/null 2>&1
