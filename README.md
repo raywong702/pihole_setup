@@ -194,17 +194,17 @@ fi
 exit 0
 ```
 
-Restart
+restart
 ```bash
 pihole restartdns
 ```
 
-Update gravity
+update gravity
 ```bash
 pihole -g
 ```
 
-Backup in /root
+backup in /root
 ```bash
 pihole -a -t
 ```
