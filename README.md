@@ -1,5 +1,13 @@
 # pihole_setup
 
+## pi
+* enable ssh in preferences
+* update pi
+```bash
+sudo apt update
+sudo apt full-upgrade
+```
+
 ## openvpn
 
 ### install openvpn
@@ -17,9 +25,9 @@ vi /etc/openvpn/server/server.conf
 comment out to only use vpn for dns lookup
 ```#push "redirect-gateway def1 bypass-dhcp"```
 
-add local ip
+add tun ip
 ```
-push "dhcp-option DNS 127.0.0.1 192.168.1.28"
+push "dhcp-option DNS 10.8.0.1"
 ```
 
 add logging
@@ -36,6 +44,12 @@ systemctl restart openvpn-server@server
 Create more client .opvn files
 ```bash
 ./openvpn-install.sh
+```
+
+Update .ovpn files
+```bash
+;remote 98.109.40.122 1194
+remote thewongguy.ddns.net 1194
 ```
 
 ### unbound
