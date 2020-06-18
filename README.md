@@ -8,6 +8,15 @@ sudo apt update
 sudo apt full-upgrade
 ```
 
+## youtube
+from [reddit](https://www.reddit.com/r/pihole/comments/9w5swx/i_think_ive_managed_to_block_youtube_ads_with/)
+* nslookup manifest.googlevideo.com
+* nslookup the IP it returns.
+*if one of the returned hostnames is iad*.googlevideo.com, you're on the right track.
+EDIT: some users report a single hostname being returned. Try using that if you don't get a second name,
+* edit your pi-hole's /etc/hosts file and create an entry with the IP address you got similar to what I have above.
+* restart dns: pihole restartdns
+
 ## openvpn
 
 ### install openvpn
