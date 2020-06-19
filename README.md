@@ -8,6 +8,9 @@ sudo apt update
 sudo apt full-upgrade
 ```
 
+## full setup
+https://www.sethenoka.com/build-your-own-wireguard-vpn-server-with-pi-hole-for-dns-level-ad-blocking/
+
 ## openvpn
 
 ### install openvpn
