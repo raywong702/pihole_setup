@@ -159,6 +159,7 @@ server:
      # IPs authorised to access the DNS Server
      access-control: 0.0.0.0/0                 refuse
      access-control: 127.0.0.1                 allow
+     access-control: 192.168.1.0/24            allow
      access-control: 192.168.99.0/24           allow
 
      # hide DNS Server info
@@ -300,3 +301,4 @@ pihole -a -t
 * https://engineerworkshop.com/blog/how-to-set-up-wireguard-on-a-raspberry-pi/
 * https://www.sigmdel.ca/michel/ha/wireguard/wireguard_02_en.html
 * https://www.linode.com/community/questions/19346/wireguard-one-click-app-suddenly-does-not-work-rtnetlink-answers
+* https://github.com/notasausage/pi-hole-unbound-wireguard
