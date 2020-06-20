@@ -109,6 +109,10 @@ curl -L https://install.pivpn.io | bash
 ```
 
 ### add clients
+```
+# For full tunnel use 0.0.0.0/0, ::/0 and for split tunnel use 192.168.1.0/24
+AllowedIPs = 10.9.0.1/32, 192.168.1.0/24
+```
 ```bash
 pivpn add
 ```
