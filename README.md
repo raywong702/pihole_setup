@@ -23,11 +23,12 @@ sudo apt full-upgrade
 ```bash
 sudo apt update
 sudo apt install unbound
-curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.root
-vi /etc/unbound/unbound.conf.d/pi-hole.conf
+sudo curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.root
+sudo vi /etc/unbound/unbound.conf.d/pi-hole.conf
 ```
 
 ### pi-hole.conf
+update 192.168.x in pi-hole.conf
 https://github.com/notasausage/pi-hole-unbound-wireguard/blob/master/pi-hole.conf
 
 ```bash
