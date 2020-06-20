@@ -159,7 +159,7 @@ server:
      # IPs authorised to access the DNS Server
      access-control: 0.0.0.0/0                 refuse
      access-control: 127.0.0.1                 allow
-     access-control: 10.20.20.0/24             allow
+     access-control: 192.168.99.0/24           allow
 
      # hide DNS Server info
      hide-identity: yes
