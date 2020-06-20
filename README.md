@@ -32,7 +32,7 @@ sysctl net.ipv4.ip_forward
 sudo reboot
 ```
 
-### resolv.conf
+### resolvconf
 ```bash
 sudo apt install resolvconf -y
 ```
@@ -51,7 +51,7 @@ sudo chmod -v 600 /etc/wireguard/wg0.conf
 sudo vi /etc/wireguard/wg0.conf
 ```
 
-wg0.conf
+### wg0.conf
 ```
 [Interface]
 PrivateKey = <server private key>
@@ -75,7 +75,7 @@ PublicKey = <macbookair client public key>
 AllowedIPs = 192.168.99.3/32
 ```
 
-s9.conf
+### s9.conf
 ```
 [Interface]
 PrivateKey = <s9 client private key>
@@ -89,7 +89,7 @@ AllowedIPs = 0.0.0.0/0, ::/0
 PersistentKeepalive = 25
 ```
 
-macbookair.conf
+### macbookair.conf
 ```
 [Interface]
 PrivateKey = <macbookair client private key>
@@ -125,73 +125,89 @@ curl -sSL https://install.pi-hole.net | bash
 ```
 
 ## unbound
+
+### unbound install
 ```bash
 sudo apt update
 sudo apt install unbound
-wget -O root.hints https://www.internic.net/domain/named.root
-sudo mv root.hints /var/lib/unbound/
-```
-```bash
+curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.root
 vi /etc/unbound/unbound.conf.d/pi-hole.conf
 ```
+
+### pi-hole.conf
 ```
 server:
-    # If no logfile is specified, syslog is used
-    # logfile: "/var/log/unbound/unbound.log"
-    verbosity: 0
+     # if no logfile is specified, syslog is used
+     # logfile: "/var/log/unbound/unbound.log"
+     verbosity: 1
+     port: 5353
 
-    interface: 127.0.0.1
-    port: 5335
-    do-ip4: yes
-    do-udp: yes
-    do-tcp: yes
+     do-ip4: yes
+     do-udp: yes
+     do-tcp: yes
 
-    # May be set to yes if you have IPv6 connectivity
-    do-ip6: no
+     # may be set to yes if you have IPv6 connectivity
+     do-ip6: no
 
-    # You want to leave this to no unless you have *native* IPv6. With 6to4 and
-    # Terredo tunnels your web browser should favor IPv4 for the same reasons
-    prefer-ip6: no
+     # use this only when you downloaded the list of primary root servers
+     root-hints: "/var/lib/unbound/root.hints"
 
-    # Use this only when you downloaded the list of primary root servers!
-    root-hints: "/var/lib/unbound/root.hints"
+     # respond to DNS requests on all interfaces
+     interface: 0.0.0.0
+     max-udp-size: 3072
 
-    # Trust glue only if it is within the server's authority
-    harden-glue: yes
+     # IPs authorised to access the DNS Server
+     access-control: 0.0.0.0/0                 refuse
+     access-control: 127.0.0.1                 allow
+     access-control: 10.20.20.0/24             allow
 
-    # Require DNSSEC data for trust-anchored zones, if such data is absent, the zone becomes BOGUS
-    harden-dnssec-stripped: yes
+     # hide DNS Server info
+     hide-identity: yes
+     hide-version: yes
 
-    # Don't use Capitalization randomization as it known to cause DNSSEC issues sometimes
-    # see https://discourse.pi-hole.net/t/unbound-stubby-or-dnscrypt-proxy/9378 for further details
-    use-caps-for-id: no
+     # limit DNS fraud and use DNSSEC
+     harden-glue: yes
+     harden-dnssec-stripped: yes
+     harden-referral-path: yes
 
-    # Reduce EDNS reassembly buffer size.
-    # Suggested by the unbound man page to reduce fragmentation reassembly problems
-    edns-buffer-size: 1472
+     # add an unwanted reply threshold to clean the cache and avoid, when possible, DNS poisoning
+     unwanted-reply-threshold: 10000000
 
-    # Perform prefetching of close to expired message cache entries
-    # This only applies to domains that have been frequently queried
-    prefetch: yes
+     # have the validator print validation failures to the log val-log-level: 1
+     # don't use Capitalisation randomisation as it known to cause DNSSEC issues sometimes
+     # see https://discourse.pi-hole.net/t/unbound-stubby-or-dnscrypt-proxy/9378 for further details
+     use-caps-for-id: no
 
-    # One thread should be sufficient, can be increased on beefy machines. In reality for most users running on small networks or on a single machine, it should be unnecessary to seek performance enhancement by increasing num-threads above 1.
-    num-threads: 1
+     # reduce EDNS reassembly buffer size
+     # suggested by the unbound man page to reduce fragmentation reassembly problems
+     edns-buffer-size: 1472
 
-    # Ensure kernel buffer is large enough to not lose messages in traffic spikes
-    so-rcvbuf: 1m
+     # TTL bounds for cache
+     cache-min-ttl: 3600
+     cache-max-ttl: 86400
 
-    # Ensure privacy of local IP ranges
-    private-address: 192.168.0.0/16
-    private-address: 169.254.0.0/16
-    private-address: 172.16.0.0/12
-    private-address: 10.0.0.0/8
-    private-address: fd00::/8
-    private-address: fe80::/10
+     # perform prefetching of close to expired message cache entries
+     # this only applies to domains that have been frequently queried
+     prefetch: yes
+     prefetch-key: yes
+     # one thread should be sufficient, can be increased on beefy machines
+     num-threads: 1
+     # ensure kernel buffer is large enough to not lose messages in traffic spikes
+     so-rcvbuf: 1m
+
+     # ensure privacy of local IP ranges
+     private-address: 192.168.0.0/16
+     private-address: 169.254.0.0/16
+     private-address: 172.16.0.0/12
+     private-address: 10.0.0.0/8
+     private-address: fd00::/8
+     private-address: fe80::/10
 ```
 
 ```bash
 sudo service unbound start
-dig pi-hole.net @127.0.0.1 -p 5335
+dig pi-hole.net @127.0.0.1 -p 5353
+dig sigfail.verteiltesysteme.net @127.0.0.1 -p 5353
 ```
 
 ## pihole setup
@@ -201,12 +217,14 @@ http://<pihole ip>/admin/
 
 Settings > DNS
 * Remove upstream
-* Update ```Custom 1 (IPv4)``` with ```127.0.0.1#5335```
-* Listen on all interfaces
+* Update ```Custom 1 (IPv4)``` with ```127.0.0.1#5353```
+* Listen on all interfaces? or wg0?
 * Use DNSSEC
 
 Group Mangement > Adlists
 Copy green ones from  ```https://firebog.net/```
+
+YouTube block list
 https://raw.githubusercontent.com/kboghdady/youTube_ads_4_pi-hole/master/black.list
 
 Blacklist > RegEx filter
@@ -239,7 +257,7 @@ IP Address: <your ip>
 0 0 * * * /usr/local/bin/pihole -g >/dev/null 2>&1
 ```
 
-startup.sh
+### startup.sh
 ```bash
 #!/bin/bash
 #set -x
