@@ -57,7 +57,6 @@ http://<pihole ip>/admin/
 Settings > DNS
 * Remove upstream
 * Update ```Custom 1 (IPv4)``` with ```127.0.0.1#5353```
-* Listen on all interfaces? or wg0?
 * Use DNSSEC
 
 Group Mangement > Adlists
@@ -87,7 +86,9 @@ From https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list
 ```
 
 Local DNS Records
+
 Domain: pi.hole
+
 IP Address: <your ip>
 
 
