@@ -67,12 +67,12 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING 
 [Peer]
 # s9
 PublicKey = <s9 client public key>
-AllowedIPs = 192.168.99.2/32
+AllowedIPs = 192.168.99.2/32, 192.168.1.0/24
 
 [Peer]
 # macbookair
 PublicKey = <macbookair client public key>
-AllowedIPs = 192.168.99.3/32
+AllowedIPs = 192.168.99.3/32, 192.168.1.0/24
 ```
 
 ### s9.conf
