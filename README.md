@@ -8,56 +8,123 @@ sudo apt update
 sudo apt full-upgrade
 ```
 
-## full setup
-https://www.sethenoka.com/build-your-own-wireguard-vpn-server-with-pi-hole-for-dns-level-ad-blocking/
+## wireguard
 
-## openvpn
-
-### install openvpn
+### install
 ```bash
-wget https://git.io/vpn -O openvpn-install.sh
-chmod 755 openvpn-install.sh
-./openvpn-install.sh
+sudo apt-get install raspberrypi-kernel-headers
+echo "deb http://deb.debian.org/debian/ unstable main" | sudo tee --append /etc/apt/sources.list.d/unstable.list
+sudo apt-get install dirmngr 
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8B48AD6246925553
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7638D0442B90D010
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 04EE7237B7D453EC
+printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' | sudo tee --append /etc/apt/preferences.d/limit-unstable
+sudo apt-get update
+sudo apt-get install wireguard
 ```
 
-### setup openvpn
+### ipv4
 ```bash
-vi /etc/openvpn/server/server.conf
+sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
+sudo sysctl -p
+sudo echo 1 > /proc/sys/net/ipv4/ip_forward
+sysctl net.ipv4.ip_forward
+sudo reboot
 ```
 
-comment out to only use vpn for dns lookup
-```
-#push "redirect-gateway def1 bypass-dhcp"
-```
-
-add tun ip
-```
-push "dhcp-option DNS 10.8.0.1"
-```
-
-add logging
-```
-log /var/log/openvpn.log
-verb 3
-```
-
-restart openvpn
+### resolv.conf
 ```bash
-systemctl restart openvpn-server@server
+sudo apt install resolvconf -y
 ```
 
-create more client .opvn files
+### server setup
 ```bash
-./openvpn-install.sh
+mkdir wireguard
+cd wireguard
+umask 077
+wg genkey | tee server_private_key | wg pubkey > server_public_key
+wg genkey | tee s9_private_key | wg pubkey > s9_public_key
+wg genkey | tee macbookair_private_key | wg pubkey > macbookair_public_key
+sudo touch /etc/wireguard/wg0.conf
+sudo chown -v root:root /etc/wireguard/wg0.conf
+sudo chmod -v 600 /etc/wireguard/wg0.conf
+sudo vi /etc/wireguard/wg0.conf
 ```
 
-update .ovpn files
+wg0.conf
+```
+[Interface]
+PrivateKey = <server private key>
+Address = 192.168.99.1/24
+ListenPort = 51900
+SaveConfig = true
+
+# Replace eth0 with the interface open to the internet (e.g might be wlan0 if wifi)
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o ens3 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ens3 -j MASQUERADE
+
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens3 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o ens3 -j MASQUERADE
+
+[Peer]
+# s9
+PublicKey = <s9 client public key>
+AllowedIPs = 192.168.99.2/32
+
+[Peer]
+# macbookair
+PublicKey = <macbookair client public key>
+AllowedIPs = 192.168.99.3/32
+```
+
+s9.conf
+```
+[Interface]
+PrivateKey = <s9 client private key>
+Address = 192.168.99.2/32
+DNS = 192.168.99.1
+
+[Peer]
+PublicKey = <server public key>
+Endpoint = <your.publicdns.com>:51900
+AllowedIPs = 0.0.0.0/0, ::/0
+PersistentKeepalive = 25
+```
+
+macbookair.conf
+```
+[Interface]
+PrivateKey = <macbookair client private key>
+Address = 192.168.99.3/32
+DNS = 192.168.99.1
+
+[Peer]
+PublicKey = <server public key>
+Endpoint = <your.publicdns.com>:51900
+AllowedIPs = 0.0.0.0/0, ::/0
+PersistentKeepalive = 25
+```
+
+### start wireguard
 ```bash
-;remote 98.109.40.122 1194
-remote thewongguy.ddns.net 1194
+sudo modprobe wireguard
+sudo wg-quick up wg0
+sudo wg
+sudo systemctl enable wg-quick@wg0
+sudo systemctl status wg-quick@wg0
+ifconfig wg0
 ```
 
-### unbound
+### firewall
+```
+placeholder
+```
+
+## pihole install
+Choose wg0 as the interface and 192.168.99.1/24 as the IP address and Google DNS as upstream
+```bash
+curl -sSL https://install.pi-hole.net | bash
+```
+
+## unbound
 ```bash
 sudo apt update
 sudo apt install unbound
@@ -121,19 +188,15 @@ server:
     private-address: fd00::/8
     private-address: fe80::/10
 ```
+
 ```bash
 sudo service unbound start
 dig pi-hole.net @127.0.0.1 -p 5335
 ```
 
-### pihole
-Choose tun0 as the interface and 10.8.0.1/24 as the IP address
-```bash
-curl -sSL https://install.pi-hole.net | bash
+## pihole setup
 ```
-
-```
-http://192.168.1.28/admin/
+http://<pihole ip>/admin/
 ```
 
 Settings > DNS
@@ -170,7 +233,7 @@ Local DNS Records
 Domain: pi.hole
 IP Address: <your ip>
   
-### crontab
+## crontab
 ```bash
 * * * * * /root/startup.sh >/dev/null 2>&1
 0 0 * * * /usr/local/bin/pihole -g >/dev/null 2>&1
@@ -212,3 +275,10 @@ backup in /root
 ```bash
 pihole -a -t
 ```
+
+## references
+* https://www.sethenoka.com/build-your-own-wireguard-vpn-server-with-pi-hole-for-dns-level-ad-blocking/
+* https://github.com/adrianmihalko/raspberrypiwireguard
+* https://engineerworkshop.com/blog/how-to-set-up-wireguard-on-a-raspberry-pi/
+* https://www.sigmdel.ca/michel/ha/wireguard/wireguard_02_en.html
+* https://www.linode.com/community/questions/19346/wireguard-one-click-app-suddenly-does-not-work-rtnetlink-answers
