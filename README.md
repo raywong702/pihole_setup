@@ -279,7 +279,7 @@ YouTube block list
 https://raw.githubusercontent.com/kboghdady/youTube_ads_4_pi-hole/master/black.list
 
 Blacklist > RegEx filter
-From ```https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list```
+From https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list
 ```
 ^ad([sxv]?[0-9]*|system)[_.-]([^.[:space:]]+\.){1,}|^.+[_.-]ad([sxv]?[0-9]*|system)[_.-]
 ^(.+[_.-])?adse?rv(er?|ice)?s?[0-9]*[_.-]
