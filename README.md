@@ -1,8 +1,17 @@
 # pihole_setup
 
 ## pi
-* enable ssh in preferences
-* update pi
+
+### change password & enable ssh
+```bash
+sudo raspi-config
+```
+
+### setup static ip in your router for pi
+
+### port forward 51900 to pi
+
+### update pi
 ```bash
 sudo apt update
 sudo apt full-upgrade
@@ -13,14 +22,19 @@ sudo apt full-upgrade
 ### install
 ```bash
 sudo apt-get install raspberrypi-kernel-headers
-echo "deb http://deb.debian.org/debian/ unstable main" | sudo tee --append /etc/apt/sources.list.d/unstable.list
-sudo apt-get install dirmngr 
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8B48AD6246925553
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7638D0442B90D010
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 04EE7237B7D453EC
-printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' | sudo tee --append /etc/apt/preferences.d/limit-unstable
+sudo echo "deb http://deb.debian.org/debian/ unstable main" | sudo tee --append /etc/apt/sources.list.d/unstable.list
+sudo printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' | sudo tee --append /etc/apt/preferences.d/limit-unstable
 sudo apt-get update
+sudo apt-get install dirmngr
 sudo apt-get install wireguard
+```
+
+### resolvconf
+```bash
+sudo apt install resolvconf -y
 ```
 
 ### ipv4
@@ -30,11 +44,6 @@ sudo sysctl -p
 sudo echo 1 > /proc/sys/net/ipv4/ip_forward
 sysctl net.ipv4.ip_forward
 sudo reboot
-```
-
-### resolvconf
-```bash
-sudo apt install resolvconf -y
 ```
 
 ### server setup
@@ -55,7 +64,7 @@ sudo vi /etc/wireguard/wg0.conf
 ```
 [Interface]
 PrivateKey = <server private key>
-Address = 192.168.99.1/24
+Address = 10.9.0.1/24
 ListenPort = 51900
 SaveConfig = true
 
@@ -67,48 +76,82 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING 
 [Peer]
 # s9
 PublicKey = <s9 client public key>
-AllowedIPs = 192.168.99.2/32, 192.168.1.0/24
+AllowedIPs = 10.9.0.2/32
 
 [Peer]
 # macbookair
 PublicKey = <macbookair client public key>
-AllowedIPs = 192.168.99.3/32, 192.168.1.0/24
+AllowedIPs = 10.9.0.3/32
 ```
 
-### s9.conf
+### s9_full.conf
 ```
 [Interface]
 PrivateKey = <s9 client private key>
-Address = 192.168.99.2/32
-DNS = 192.168.99.1
+Address = 10.9.0.2/32
+DNS = 192.168.x.x
 
 [Peer]
 PublicKey = <server public key>
 Endpoint = <your.publicdns.com>:51900
+# For full tunnel use 0.0.0.0/0, ::/0 and for split tunnel use 192.168.1.0/24
 AllowedIPs = 0.0.0.0/0, ::/0
 PersistentKeepalive = 25
 ```
 
-### macbookair.conf
+### s9_dns.conf
+```
+[Interface]
+PrivateKey = <s9 client private key>
+Address = 10.9.0.2/32
+DNS = 192.168.x.x
+
+[Peer]
+PublicKey = <server public key>
+Endpoint = <your.publicdns.com>:51900
+# For full tunnel use 0.0.0.0/0, ::/0 and for split tunnel use 192.168.1.0/24
+AllowedIPs = 10.9.0.1/32, 192.168.1.0/24
+PersistentKeepalive = 25
+```
+
+### macbookair_full.conf
 ```
 [Interface]
 PrivateKey = <macbookair client private key>
-Address = 192.168.99.3/32
-DNS = 192.168.99.1
+Address = 10.9.0.3/32
+DNS = 192.168.x.x
 
 [Peer]
 PublicKey = <server public key>
 Endpoint = <your.publicdns.com>:51900
+# For full tunnel use 0.0.0.0/0, ::/0 and for split tunnel use 192.168.1.0/24
 AllowedIPs = 0.0.0.0/0, ::/0
 PersistentKeepalive = 25
 ```
+
+### macbookair_dns.conf
+```
+[Interface]
+PrivateKey = <macbookair client private key>
+Address = 10.9.0.3/32
+DNS = 192.168.x.x
+
+[Peer]
+PublicKey = <server public key>
+Endpoint = <your.publicdns.com>:51900
+# For full tunnel use 0.0.0.0/0, ::/0 and for split tunnel use 192.168.1.0/24
+AllowedIPs = 10.9.0.1/32, 192.168.1.0/24
+PersistentKeepalive = 25
+```
+
+### backup and download confs
 
 ### start wireguard
 ```bash
 sudo modprobe wireguard
+sudo systemctl enable wg-quick@wg0
 sudo wg-quick up wg0
 sudo wg
-sudo systemctl enable wg-quick@wg0
 sudo systemctl status wg-quick@wg0
 ifconfig wg0
 ```
@@ -119,7 +162,7 @@ placeholder
 ```
 
 ## pihole install
-Choose wg0 as the interface and 192.168.99.1/24 as the IP address and Google DNS as upstream
+Choose wg0 as the interface and 10.9.0.1/24 as the IP address and Google DNS as upstream
 ```bash
 curl -sSL https://install.pi-hole.net | bash
 ```
@@ -160,7 +203,7 @@ server:
      access-control: 0.0.0.0/0                 refuse
      access-control: 127.0.0.1                 allow
      access-control: 192.168.1.0/24            allow
-     access-control: 192.168.99.0/24           allow
+     access-control: 10.9.0.0/24               allow
 
      # hide DNS Server info
      hide-identity: yes
@@ -212,6 +255,13 @@ dig sigfail.verteiltesysteme.net @127.0.0.1 -p 5353
 ```
 
 ## pihole setup
+
+### reset password
+```bash
+pihole -a -p
+```
+
+### configure
 ```
 http://<pihole ip>/admin/
 ```
@@ -251,7 +301,7 @@ From ```https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list`
 Local DNS Records
 Domain: pi.hole
 IP Address: <your ip>
-  
+
 ## crontab
 ```bash
 * * * * * /root/startup.sh >/dev/null 2>&1
