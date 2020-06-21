@@ -28,7 +28,9 @@ sudo vi /etc/unbound/unbound.conf.d/pi-hole.conf
 ```
 
 ### pi-hole.conf
+
 update 192.168.x in pi-hole.conf
+
 https://github.com/notasausage/pi-hole-unbound-wireguard/blob/master/pi-hole.conf
 
 ```bash
