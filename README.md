@@ -88,13 +88,6 @@ From https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list
 ^track(ing)?[0-9]*[_.-]
 ```
 
-Local DNS Records
-
-Domain: pi.hole
-
-IP Address: <your ip>
-
-
 ### update gravity
 ```bash
 pihole -g
