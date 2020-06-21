@@ -63,7 +63,7 @@ Settings > DNS
 * Use DNSSEC
 
 Group Mangement > Adlists
-Copy green ones from  ```https://firebog.net/```
+Copy green ones from https://firebog.net/
 
 YouTube block list
 https://raw.githubusercontent.com/kboghdady/youTube_ads_4_pi-hole/master/black.list
