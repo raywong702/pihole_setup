@@ -131,3 +131,4 @@ scp pi-user@ip-of-your-raspberry:configs/whatever.conf
 * https://www.sigmdel.ca/michel/ha/wireguard/wireguard_02_en.html
 * https://www.linode.com/community/questions/19346/wireguard-one-click-app-suddenly-does-not-work-rtnetlink-answers
 * https://github.com/notasausage/pi-hole-unbound-wireguard
+* https://davidshomelab.com/access-your-home-network-from-anywhere-with-wireguard-vpn/
