@@ -14,7 +14,7 @@ sudo raspi-config
 ### update pi
 ```bash
 sudo apt update
-sudo apt full-upgrade
+sudo apt -y full-upgrade
 ```
 
 ## unbound
@@ -22,7 +22,7 @@ sudo apt full-upgrade
 ### unbound install
 ```bash
 sudo apt update
-sudo apt install unbound
+sudo apt -y install unbound dnsutils
 sudo curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.root
 sudo vi /etc/unbound/unbound.conf.d/pi-hole.conf
 ```
