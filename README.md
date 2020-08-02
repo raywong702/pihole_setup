@@ -114,6 +114,11 @@ AllowedIPs = 10.9.0.1/32, 192.168.1.0/24
 pivpn add
 ```
 
+### status
+```bash
+systemctl status wg-quick@wg0
+```
+
 ### backup and transfer clients
 ```bash
 scp pi-user@ip-of-your-raspberry:configs/whatever.conf
