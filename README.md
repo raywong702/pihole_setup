@@ -9,7 +9,9 @@ sudo raspi-config
 
 ### setup static ip in your router for pi
 
-### port forward 51900 to pi
+### port forward 51820 to pi for wireguard
+
+### port forward 32400 to pi for plex
 
 ### update pi
 ```bash
