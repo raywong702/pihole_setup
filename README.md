@@ -185,5 +185,4 @@ nameserver 127.0.0.1
 * https://www.linode.com/community/questions/19346/wireguard-one-click-app-suddenly-does-not-work-rtnetlink-answers
 * https://github.com/notasausage/pi-hole-unbound-wireguard
 * https://davidshomelab.com/access-your-home-network-from-anywhere-with-wireguard-vpn/
-* systemctl status pihole-FTL.service
 * https://www.synology.com/en-uk/knowledgebase/DSM/tutorial/File_Sharing/How_to_access_files_on_Synology_NAS_within_the_local_network_NFS
