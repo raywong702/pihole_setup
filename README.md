@@ -133,10 +133,6 @@ scp pi-user@ip-of-your-raspberry:configs/whatever.conf
 ## update router's DNS to pihole's ip address. if you need 2 ips, and do not have 2 piholes, use ethernet and wireless or junk ip.
 
 ## install wireguard clients
-```bash
-brew install wireguard-tools
-```
-
 https://play.google.com/store/apps/details?id=com.wireguard.android&hl=en_US
 
 https://apps.apple.com/us/app/wireguard/id1441195209
