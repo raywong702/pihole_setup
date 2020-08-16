@@ -89,6 +89,11 @@ From https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list
 ^track(ing)?[0-9]*[_.-]
 ```
 
+Whitelist
+```
+lcprd1.samsungcloudsolution.net
+```
+
 ### update gravity
 ```bash
 pihole -g
