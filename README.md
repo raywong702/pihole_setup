@@ -92,6 +92,7 @@ From https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list
 Whitelist
 ```
 lcprd1.samsungcloudsolution.net
+osb-ussvc.samsungqbe.com
 ```
 
 ### update gravity
