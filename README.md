@@ -91,8 +91,6 @@ From https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list
 
 Whitelist
 ```
-lcprd1.samsungcloudsolution.net
-osb-ussvc.samsungqbe.com
 ```
 
 ### update gravity
@@ -100,7 +98,7 @@ osb-ussvc.samsungqbe.com
 pihole -g
 ```
 
-### backup in /root
+### backup in home directory
 ```bash
 pihole -a -t
 ```
