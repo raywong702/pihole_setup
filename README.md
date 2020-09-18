@@ -91,6 +91,10 @@ From https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list
 
 Whitelist
 ```
+thepiratebay.org
+mobile.pipe.aria.microsoft.com
+link.patch.com
+syndication.twitter.com
 ```
 
 ### update gravity
