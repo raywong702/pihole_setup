@@ -69,10 +69,6 @@ Copy green ones from https://firebog.net/
 YouTube block list
 https://raw.githubusercontent.com/kboghdady/youTube_ads_4_pi-hole/master/black.list
 
-Hulu block list
-ads-e-darwin.hulustream.com
-ads-v-darwin.hulustream.com
-
 Blacklist > RegEx filter
 From https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list
 ```
