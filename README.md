@@ -142,6 +142,10 @@ pivpn add
 ### status
 ```bash
 systemctl status wg-quick@wg0
+
+systemctl status unbound
+
+pihole status
 ```
 
 ### backup and transfer clients
@@ -162,6 +166,13 @@ if you need 2 ips, and do not have 2 piholes, use ethernet and wireless or junk 
 https://play.google.com/store/apps/details?id=com.wireguard.android&hl=en_US
 
 https://apps.apple.com/us/app/wireguard/id1441195209
+
+## restart pihole dns after reboot
+
+```bash
+pihole restartdns
+pihole arpflush
+```
 
 ## references
 * https://www.sethenoka.com/build-your-own-wireguard-vpn-server-with-pi-hole-for-dns-level-ad-blocking/
