@@ -95,6 +95,7 @@ thepiratebay.org
 mobile.pipe.aria.microsoft.com
 link.patch.com
 syndication.twitter.com
+samsungcloudsolution.net
 ```
 
 ### update gravity
