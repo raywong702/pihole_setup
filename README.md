@@ -95,7 +95,8 @@ thepiratebay.org
 mobile.pipe.aria.microsoft.com
 link.patch.com
 syndication.twitter.com
-samsungcloudsolution.net
+costco.com
+lcprd1.samsungcloudsolution.net
 ```
 
 ### update gravity
