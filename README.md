@@ -96,7 +96,6 @@ mobile.pipe.aria.microsoft.com
 link.patch.com
 syndication.twitter.com
 costco.com
-lcprd1.samsungcloudsolution.net
 ```
 
 ### update gravity
