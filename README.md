@@ -207,22 +207,6 @@ pihole -a -t
 curl -L https://install.pivpn.io | bash
 ```
 
-### hotfix
-
-https://github.com/pivpn/pivpn/issues/920#issuecomment-578651638
-
-```
-sudo -s
-source /usr/src/wireguard-*/dkms.conf
-dkms uninstall wireguard/$PACKAGE_VERSION
-dkms remove wireguard/$PACKAGE_VERSION
-dkms add wireguard/$PACKAGE_VERSION
-dkms build wireguard/$PACKAGE_VERSION
-dkms install wireguard/$PACKAGE_VERSION
-exit
-pivpn debug
-```
-
 ### add clients
 ```
 # For full tunnel use 0.0.0.0/0, ::/0 and for split tunnel use 192.168.1.0/24
