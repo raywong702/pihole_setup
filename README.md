@@ -14,9 +14,20 @@ sudo raspi-config
 ### port forward 32400 to pi for plex
 
 ### update pi
+
 ```bash
 sudo apt update
 sudo apt -y full-upgrade
+```
+
+### ssh
+
+```
+ssh-keygen
+```
+
+```
+vi ~/.ssh/authorized_keys
 ```
 
 ## unbound
