@@ -251,6 +251,22 @@ pihole restartdns
 pihole arpflush
 ```
 
+## tailscale
+
+```
+curl -fsSL https://tailscale.com/install.sh | sh
+```
+
+```
+echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf
+echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p /etc/sysctl.conf
+```
+
+```
+sudo tailscale up --ssh --advertise-exit-node
+```
+
 ## references
 * https://www.sethenoka.com/build-your-own-wireguard-vpn-server-with-pi-hole-for-dns-level-ad-blocking/
 * https://github.com/adrianmihalko/raspberrypiwireguard
