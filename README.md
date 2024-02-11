@@ -9,8 +9,6 @@ sudo raspi-config
 
 ### setup static ip in your router for pi
 
-### port forward 51820 to pi for wireguard
-
 ### port forward 32400 to pi for plex
 
 ### update pi
@@ -200,26 +198,8 @@ pihole -g
 pihole -a -t
 ```
 
-## wireguard with pivpn
-
-### wireguard install
-```bash
-curl -L https://install.pivpn.io | bash
-```
-
-### add clients
-```
-# For full tunnel use 0.0.0.0/0, ::/0 and for split tunnel use 192.168.1.0/24
-AllowedIPs = 10.6.0.1/32, 192.168.1.0/24
-```
-```bash
-pivpn add
-```
-
 ### status
 ```bash
-systemctl status wg-quick@wg0
-
 systemctl status unbound
 
 pihole status
@@ -238,11 +218,6 @@ scp pi-user@ip-of-your-raspberry:configs/whatever.conf
 ## update router's DNS to pihole's ip address
 
 if you need 2 ips, and do not have 2 piholes, use ethernet and wireless or junk ip.
-
-## install wireguard clients
-https://play.google.com/store/apps/details?id=com.wireguard.android&hl=en_US
-
-https://apps.apple.com/us/app/wireguard/id1441195209
 
 ## restart pihole dns after reboot
 
