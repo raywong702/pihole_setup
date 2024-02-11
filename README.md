@@ -264,7 +264,7 @@ sudo sysctl -p /etc/sysctl.conf
 ```
 
 ```
-sudo tailscale up --ssh --advertise-exit-node
+sudo tailscale up --ssh --advertise-exit-node --accept-dns=false
 ```
 
 ## references
@@ -277,3 +277,6 @@ sudo tailscale up --ssh --advertise-exit-node
 * https://davidshomelab.com/access-your-home-network-from-anywhere-with-wireguard-vpn/
 * https://pimylifeup.com/raspberry-pi-plex-server/
 * https://www.synology.com/en-uk/knowledgebase/DSM/tutorial/File_Sharing/How_to_access_files_on_Synology_NAS_within_the_local_network_NFS
+* https://tailscale.com/kb/1193/tailscale-ssh
+* https://tailscale.com/kb/1103/exit-nodes
+* https://tailscale.com/kb/1114/pi-hole
