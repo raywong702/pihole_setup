@@ -264,7 +264,7 @@ sudo sysctl -p /etc/sysctl.conf
 ```
 
 ```
-sudo tailscale up --ssh --advertise-exit-node --accept-dns=false
+sudo tailscale up --ssh --advertise-exit-node --accept-dns=false --advertise-routes=192.168.1.0/24
 ```
 
 ## references
@@ -280,3 +280,4 @@ sudo tailscale up --ssh --advertise-exit-node --accept-dns=false
 * https://tailscale.com/kb/1193/tailscale-ssh
 * https://tailscale.com/kb/1103/exit-nodes
 * https://tailscale.com/kb/1114/pi-hole
+* https://tailscale.com/kb/1019/subnets#advertise-subnet-routes
