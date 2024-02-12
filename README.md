@@ -239,6 +239,7 @@ sudo sysctl -p /etc/sysctl.conf
 ```
 
 ```
+sudo tailscale up --ssh --advertise-exit-node --accept-dns=false --advertise-routes=172.16.32.0/24
 sudo tailscale up --ssh --advertise-exit-node --accept-dns=false --advertise-routes=192.168.1.0/24
 ```
 
