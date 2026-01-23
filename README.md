@@ -141,7 +141,7 @@ curl -sSL https://install.pi-hole.net | bash
 
 ### reset password
 ```bash
-pihole setpassword
+sudo pihole setpassword
 ```
 
 ### configure
