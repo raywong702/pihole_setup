@@ -215,6 +215,11 @@ scp pi-user@ip-of-your-raspberry:configs/whatever.conf
 0 0 * * * /usr/local/bin/pihole -g >/dev/null 2>&1
 ```
 
+## perms
+```bash
+sudo chmod +r /etc/pihole/versions
+```
+
 ## update router's DNS to pihole's ip address
 
 if you need 2 ips, and do not have 2 piholes, use ethernet and wireless or junk ip.
