@@ -18,6 +18,15 @@ sudo apt update
 sudo apt -y full-upgrade
 ```
 
+### locale
+
+uncomment `en_US.UTF-8 UTF-8` and reload
+
+```bash
+sudo vi /etc/locale.gen
+sudo locale-gen
+```
+
 ### ssh
 
 ```
