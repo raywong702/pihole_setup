@@ -199,7 +199,7 @@ costco.com
 
 ### update gravity
 ```bash
-pihole -g
+sudo pihole -g
 ```
 
 ### backup in home directory
@@ -221,7 +221,7 @@ scp pi-user@ip-of-your-raspberry:configs/whatever.conf
 
 ## crontab
 ```bash
-0 0 * * * /usr/local/bin/pihole -g >/dev/null 2>&1
+0 0 * * * /usr/bin/sudo /usr/local/bin/pihole -g >/dev/null 2>&1
 ```
 
 ## perms
