@@ -162,6 +162,9 @@ Settings > DNS
 * Remove upstream
 * Update ```Custom 1 (IPv4)``` with ```127.0.0.1#5335```
 
+Settings > Teleporter
+Export/Import backup
+
 Group Mangement > Adlists
 Copy green ones from https://firebog.net/
 
@@ -242,6 +245,9 @@ pihole arpflush
 
 ## tailscale
 
+https://login.tailscale.com/admin/machines
+Delete old machine
+
 ```
 curl -fsSL https://tailscale.com/install.sh | sh
 ```
@@ -257,8 +263,21 @@ sudo tailscale up --ssh --advertise-exit-node --accept-dns=false --advertise-rou
 ```
 
 ```
-sudo tailscale up --ssh --advertise-exit-node --accept-dns=false --advertise-routes=192.168.1.0/24
+sudo tailscale up --ssh --advertise-exit-node --accept-dns=false --advertise-routes=172.16.64.0/24
 ```
+
+```
+sudo systemctl restart tailscaled
+```
+
+```
+sudo shutdown -r now
+```
+
+https://login.tailscale.com/admin/machines
+Disable key expiry
+Enable route settings
+
 
 ## references
 * https://www.sethenoka.com/build-your-own-wireguard-vpn-server-with-pi-hole-for-dns-level-ad-blocking/
